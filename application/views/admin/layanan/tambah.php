@@ -37,7 +37,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Ubah Komponen</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Tambah Layanan</h1>
                     </div>
 
                     <!-- Content Row -->
@@ -45,21 +45,33 @@
                         <div class="col">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
-                                    <a href="<?php echo site_url('admin/komponen/') ?>"><i class="fas fa-arrow-left"></i> Kembali</a>
+                                    <a href="<?php echo site_url('admin/layanan/') ?>"><i class="fas fa-arrow-left"></i> Kembali</a>
                                 </div>
                                 <div class="card-body">
 
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="<?php echo site_url('admin/layanan/tambah') ?>" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label for="id_komponen">ID Komponen</label>
-                                            <input class="form-control" type="text" name="id_komponen" value="<?= $komponen->id_komponen ?>" readonly />
+                                            <label for="id_layanan">ID Layanan</label>
+                                            <input class="form-control" type="text" name="id_layanan" value="LYN<?= sprintf("%03s", $id_layanan) ?>" readonly />
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="nama_komponen">Nama Komponen*</label>
-                                            <input class="form-control <?php echo form_error('nama_komponen') ? 'is-invalid' : '' ?>" type="text" name="nama_komponen" value="<?= $komponen->nama_komponen ?>" />
+                                            <label for="nama_layanan">Nama Layanan*</label>
+                                            <input class="form-control <?php echo form_error('nama_layanan') ? 'is-invalid' : '' ?>" type="text" name="nama_layanan" placeholder="Nama Layanan" />
                                             <div class="invalid-feedback">
-                                                <?php echo form_error('nama_komponen') ?>
+                                                <?php echo form_error('nama_layanan') ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_subkomponen">Nama SubKomponen*</label>
+                                            <select class="form-control selectpicker <?php echo form_error('id_subkomponen') ? 'is-invalid' : '' ?>" name="id_subkomponen" id="id_subkomponen" data-live-search="true" title="Pilih SubKomponen...">
+                                                <?php foreach ($subkomponen as $k) : ?>
+                                                    <option data-tokens=" <?= $k->nama_subkom ?>" value="<?= $k->id_subkom ?>"><?= $k->nama_subkom ?> <?= $k->keterangan ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                <?php echo form_error('id_subkomponen') ?>
                                             </div>
                                         </div>
 

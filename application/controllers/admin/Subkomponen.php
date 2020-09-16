@@ -8,6 +8,7 @@ class Subkomponen extends CI_Controller
     {
         parent::__construct();
         $this->load->model("subkomponen_model");
+        $this->load->model("komponen_model");
         $this->load->library('form_validation');
     }
 
@@ -24,6 +25,7 @@ class Subkomponen extends CI_Controller
         $kodeId = substr($idTerakhir, 3, 3);
         $kodeTerbaru = $kodeId + 1;
         $data['id_subkom'] = $kodeTerbaru;
+        $data["komponen"] = $this->komponen_model->getAll();
         $validation = $this->form_validation;
         $validation->set_rules($subkomponen->rules());
 
@@ -37,29 +39,30 @@ class Subkomponen extends CI_Controller
 
     public function ubah($id = null)
     {
-        if (!isset($id)) redirect('admin/komponen');
+        if (!isset($id)) redirect('admin/subkomponen');
 
-        $komponen = $this->komponen_model;
+        $subkomponen = $this->subkomponen_model;
+        $data["komponen"] = $this->komponen_model->getAll();
         $validation = $this->form_validation;
-        $validation->set_rules($komponen->rules());
+        $validation->set_rules($subkomponen->rules());
 
         if ($validation->run()) {
-            $komponen->update();
+            $subkomponen->update();
             $this->session->set_flashdata('success', 'Berhasil disimpan');
         }
 
-        $data["komponen"] = $komponen->getById($id);
-        if (!$data["komponen"]) show_404();
+        $data["subkomponen"] = $subkomponen->getById($id);
+        if (!$data["subkomponen"]) show_404();
 
-        $this->load->view("admin/komponen/ubah", $data);
+        $this->load->view("admin/subkomponen/ubah", $data);
     }
 
     public function hapus($id = null)
     {
         if (!isset($id)) show_404();
 
-        if ($this->komponen_model->delete($id)) {
-            redirect(site_url('admin/komponen'));
+        if ($this->subkomponen_model->delete($id)) {
+            redirect(site_url('admin/subkomponen'));
         }
     }
 }

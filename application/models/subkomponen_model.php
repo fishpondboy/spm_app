@@ -8,6 +8,7 @@ class subkomponen_model extends CI_Model
     public $id_subkom;
     public $nama_subkom;
     public $id_komponen;
+    public $keterangan;
 
     public function rules()
     {
@@ -36,7 +37,12 @@ class subkomponen_model extends CI_Model
 
     public function getById($id)
     {
-        return $this->db->get_where($this->_subkomponen, ["id_subkom" => $id])->row();
+        $this->db->select('*');
+        $this->db->from($this->_subkomponen);
+        $this->db->join($this->_komponen, $this->_komponen . '.id_komponen = ' . $this->_subkomponen . '.id_komponen', 'left');
+        $this->db->where('id_subkom', $id);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function checkId()
@@ -52,20 +58,23 @@ class subkomponen_model extends CI_Model
         $post = $this->input->post();
         $this->id_subkom = $post["id_subkom"];
         $this->nama_subkom = $post["nama_subkom"];
+        $this->keterangan = $post["keterangan"];
         $this->id_komponen = $post['id_komponen'];
-        return $this->db->insert($this->_komponen, $this);
+        return $this->db->insert($this->_subkomponen, $this);
     }
 
     public function update()
     {
         $post = $this->input->post();
-        $this->id_komponen = $post["id_komponen"];
-        $this->nama_komponen = $post["nama_komponen"];
-        return $this->db->update($this->_komponen, $this, array('id_komponen' => $post['id_komponen']));
+        $this->id_subkom = $post["id_subkom"];
+        $this->nama_subkom = $post["nama_subkom"];
+        $this->keterangan = $post["keterangan"];
+        $this->id_komponen = $post['id_komponen'];
+        return $this->db->update($this->_subkomponen, $this, array('id_subkom' => $post['id_subkom']));
     }
 
     public function delete($id)
     {
-        return $this->db->delete($this->_komponen, array("id_komponen" => $id));
+        return $this->db->delete($this->_subkomponen, array("id_subkom" => $id));
     }
 }

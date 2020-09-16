@@ -56,10 +56,27 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="nama_subkom">Nama SubKomponen</label>
+                                            <label for="nama_subkom">Nama SubKomponen*</label>
                                             <input class="form-control <?php echo form_error('nama_subkom') ? 'is-invalid' : '' ?>" type="text" name="nama_subkom" placeholder="Nama SubKomponen" />
                                             <div class="invalid-feedback">
                                                 <?php echo form_error('nama_subkom') ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="nama_subkom">Keterangan</label>
+                                            <textarea class="form-control" name="keterangan" placeholder="Keterangan SubKomponen"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_komponen">Nama Komponen*</label>
+                                            <select class="form-control selectpicker <?php echo form_error('id_komponen') ? 'is-invalid' : '' ?>" name="id_komponen" id="id_komponen" data-live-search="true" title="Pilih Komponen...">
+                                                <?php foreach ($komponen as $k) : ?>
+                                                    <option data-tokens=" <?= $k->nama_komponen ?>" value="<?= $k->id_komponen ?>"><?= $k->nama_komponen ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                <?php echo form_error('id_komponen') ?>
                                             </div>
                                         </div>
 

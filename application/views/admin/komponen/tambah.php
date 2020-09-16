@@ -56,7 +56,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="nama_komponen">Nama Komponen</label>
+                                            <label for="nama_komponen">Nama Komponen*</label>
                                             <input class="form-control <?php echo form_error('nama_komponen') ? 'is-invalid' : '' ?>" type="text" name="nama_komponen" placeholder="Nama Komponen" />
                                             <div class="invalid-feedback">
                                                 <?php echo form_error('nama_komponen') ?>

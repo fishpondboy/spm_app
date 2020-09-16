@@ -35,6 +35,12 @@
             <span>Sub Komponen</span></a>
     </li>
 
+    <li class="nav-item <?php echo $this->uri->segment(2) == 'layanan' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?php echo site_url('admin/layanan') ?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Layanan</span></a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
