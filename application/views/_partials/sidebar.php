@@ -38,7 +38,19 @@
     <li class="nav-item <?php echo $this->uri->segment(2) == 'layanan' ? 'active' : '' ?>">
         <a class="nav-link" href="<?php echo site_url('admin/layanan') ?>">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Layanan</span></a>
+            <span>Jenis Layanan</span></a>
+    </li>
+
+    <li class="nav-item <?php echo $this->uri->segment(2) == 'unitpj' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?php echo site_url('admin/unitpj') ?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Unit Penanggung Jawab</span></a>
+    </li>
+
+    <li class="nav-item <?php echo $this->uri->segment(2) == 'subpj' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?php echo site_url('admin/subpj') ?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Sub Unit Penanggung Jawab</span></a>
     </li>
 
     <!-- Divider -->
