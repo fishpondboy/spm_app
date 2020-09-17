@@ -37,7 +37,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Ubah SubKomponen</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Ubah Indikator</h1>
                     </div>
 
                     <!-- Content Row -->
@@ -45,39 +45,55 @@
                         <div class="col">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
-                                    <a href="<?php echo site_url('admin/subkomponen/') ?>"><i class="fas fa-arrow-left"></i> Kembali</a>
+                                    <a href="<?php echo site_url('admin/indikator/') ?>"><i class="fas fa-arrow-left"></i> Kembali</a>
                                 </div>
                                 <div class="card-body">
 
                                     <form action="" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label for="id_subkom">ID SubKomponen</label>
-                                            <input class="form-control" type="text" name="id_subkom" value="<?= $subkomponen->id_subkom ?>" readonly />
+                                            <label for="id_indikator">ID Indikator</label>
+                                            <input class="form-control" type="text" name="id_indikator" value="<?= $indikator->id_indikator ?>" readonly />
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="nama_subkom">Nama SubKomponen*</label>
-                                            <input class="form-control <?php echo form_error('nama_subkom') ? 'is-invalid' : '' ?>" type="text" name="nama_subkom" value="<?= $subkomponen->nama_subkom ?>" />
+                                            <label for="nama_indikator">Nama Indikator*</label>
+                                            <input class="form-control <?php echo form_error('nama_indikator') ? 'is-invalid' : '' ?>" type="text" name="nama_indikator" value="<?= $indikator->nama_indikator ?>" />
                                             <div class="invalid-feedback">
-                                                <?php echo form_error('nama_subkom') ?>
+                                                <?php echo form_error('nama_indikator') ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="keterangan">Keterangan</label>
-                                            <textarea class="form-control" name="keterangan" value="<?= $subkomponen->keterangan ? $subkomponen->keterangan : '' ?>"></textarea>
+                                            <label for="ket_satuan">Keterangan Satuan</label>
+                                            <input class="form-control <?php echo form_error('ket_satuan') ? 'is-invalid' : '' ?>" type="text" name="ket_satuan" value="<?= $indikator->ket_satuan ?>" />
+                                            <div class="invalid-feedback">
+                                                <?php echo form_error('ket_satuan') ?>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="id_komponen">Nama Komponen*</label>
-                                            <select class="form-control selectpicker <?php echo form_error('id_komponen') ? 'is-invalid' : '' ?>" name="id_komponen" id="id_komponen" data-live-search="true">
-                                                <option data-tokens=" <?= $subkomponen->nama_komponen ?>" value="<?= $subkomponen->id_komponen ?>"><?= $subkomponen->nama_komponen ?></option>
-                                                <?php foreach ($komponen as $k) : ?>
-                                                    <option data-tokens=" <?= $k->nama_komponen ?>" value="<?= $k->id_komponen ?>"><?= $k->nama_komponen ?></option>
+                                            <label for="id_layanan">Nama Layanan*</label>
+                                            <select class="form-control selectpicker <?php echo form_error('id_layanan') ? 'is-invalid' : '' ?>" name="id_layanan" id="id_layanan" data-live-search="true">
+                                                <option data-tokens=" <?= $indikator->nama_layanan ?>" value="<?= $indikator->id_layanan ?>"><?= $indikator->nama_layanan ?></option>
+                                                <?php foreach ($layanan as $k) : ?>
+                                                    <option data-tokens=" <?= $k->nama_layanan ?>" value="<?= $k->id_layanan ?>"><?= $k->nama_layanan ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <div class="invalid-feedback">
-                                                <?php echo form_error('id_komponen') ?>
+                                                <?php echo form_error('id_layanan') ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_subpj">Nama Unit Penanggung Jawab*</label>
+                                            <select class="form-control selectpicker <?php echo form_error('id_subpj') ? 'is-invalid' : '' ?>" name="id_subpj" id="id_subpj" data-live-search="true">
+                                                <option data-tokens=" <?= $indikator->nama_subpj ?>" value="<?= $indikator->id_subpj ?>"><?= $indikator->nama_subpj ?></option>
+                                                <?php foreach ($subpj as $k) : ?>
+                                                    <option data-tokens=" <?= $k->nama_subpj ?>" value="<?= $k->id_subpj ?>"><?= $k->nama_subpj ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                <?php echo form_error('id_subpj') ?>
                                             </div>
                                         </div>
 
