@@ -9,11 +9,15 @@ class Komponen extends CI_Controller
         parent::__construct();
         $this->load->model("komponen_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
     {
         $data["komponen"] = $this->komponen_model->getAll();
+        $data['session'] = $this->session->userdata('user_logged');
+
         $this->load->view("admin/komponen/komponen", $data);
     }
 
@@ -24,6 +28,8 @@ class Komponen extends CI_Controller
         $kodeId = substr($idTerakhir, 3, 3);
         $kodeTerbaru = $kodeId + 1;
         $data['id_komponen'] = $kodeTerbaru;
+        $data['session'] = $this->session->userdata('user_logged');
+
         $validation = $this->form_validation;
         $validation->set_rules($komponen->rules());
 
@@ -49,6 +55,8 @@ class Komponen extends CI_Controller
         }
 
         $data["komponen"] = $komponen->getById($id);
+        $data['session'] = $this->session->userdata('user_logged');
+
         if (!$data["komponen"]) show_404();
 
         $this->load->view("admin/komponen/ubah", $data);

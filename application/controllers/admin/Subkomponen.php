@@ -10,10 +10,14 @@ class Subkomponen extends CI_Controller
         $this->load->model("subkomponen_model");
         $this->load->model("komponen_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
     {
+        $data['session'] = $this->session->userdata('user_logged');
+
         $data["subkomponen"] = $this->subkomponen_model->getAll();
         $this->load->view("admin/subkomponen/subkomponen", $data);
     }
@@ -28,6 +32,8 @@ class Subkomponen extends CI_Controller
         $data["komponen"] = $this->komponen_model->getAll();
         $validation = $this->form_validation;
         $validation->set_rules($subkomponen->rules());
+        $data['session'] = $this->session->userdata('user_logged');
+
 
         if ($validation->run()) {
             $subkomponen->save();
@@ -45,6 +51,8 @@ class Subkomponen extends CI_Controller
         $data["komponen"] = $this->komponen_model->getAll();
         $validation = $this->form_validation;
         $validation->set_rules($subkomponen->rules());
+        $data['session'] = $this->session->userdata('user_logged');
+
 
         if ($validation->run()) {
             $subkomponen->update();

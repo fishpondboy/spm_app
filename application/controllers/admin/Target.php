@@ -2,13 +2,14 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Subpj extends CI_Controller
+class Target extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model("subpj_model");
-        $this->load->model("unitpj_model");
+        $this->load->model("target_model");
+        $this->load->model("indikator_model");
+        $this->load->model("overview_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
@@ -16,61 +17,58 @@ class Subpj extends CI_Controller
 
     public function index()
     {
-        $data["subpj"] = $this->subpj_model->getAll();
+        $data["tahun"] = $this->overview_model->getTahun();
+        $data["target"] = $this->target_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
 
-        $this->load->view("admin/subpj/subpj", $data);
+        $this->load->view("admin/target/target", $data);
     }
 
     public function tambah()
     {
-        $subpj = $this->subpj_model;
-        $idTerakhir = $subpj->checkId();
-        $kodeId = substr($idTerakhir, 3, 3);
-        $kodeTerbaru = $kodeId + 1;
-        $data['id_subpj'] = $kodeTerbaru;
-        $data["unitpj"] = $this->unitpj_model->getAll();
+        $target = $this->target_model;
+        $data["indikator"] = $this->indikator_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
 
         $validation = $this->form_validation;
-        $validation->set_rules($subpj->rules());
+        $validation->set_rules($target->rules());
 
         if ($validation->run()) {
-            $subpj->save();
+            $target->save();
             $this->session->set_flashdata('success', 'Berhasil disimpan');
         }
 
-        $this->load->view("admin/subpj/tambah", $data);
+        $this->load->view("admin/target/tambah", $data);
     }
 
     public function ubah($id = null)
     {
-        if (!isset($id)) redirect('admin/subpj');
+        if (!isset($id)) redirect('admin/target');
 
-        $subpj = $this->subpj_model;
-        $data["unitpj"] = $this->unitpj_model->getAll();
+        $target = $this->target_model;
+        $data["indikator"] = $this->indikator_model->getAll();
         $validation = $this->form_validation;
-        $validation->set_rules($subpj->rules());
+        $validation->set_rules($target->rules());
         $data['session'] = $this->session->userdata('user_logged');
 
 
         if ($validation->run()) {
-            $subpj->update();
+            $target->update();
             $this->session->set_flashdata('success', 'Berhasil disimpan');
         }
 
-        $data["subpj"] = $subpj->getById($id);
-        if (!$data["subpj"]) show_404();
+        $data["target"] = $target->getById($id);
+        if (!$data["target"]) show_404();
 
-        $this->load->view("admin/subpj/ubah", $data);
+        $this->load->view("admin/target/ubah", $data);
     }
 
     public function hapus($id = null)
     {
         if (!isset($id)) show_404();
 
-        if ($this->subpj_model->delete($id)) {
-            redirect(site_url('admin/subpj'));
+        if ($this->target_model->delete($id)) {
+            redirect(site_url('admin/target'));
         }
     }
 }

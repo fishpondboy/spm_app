@@ -9,11 +9,15 @@ class Unitpj extends CI_Controller
         parent::__construct();
         $this->load->model("unitpj_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
     {
         $data["unitpj"] = $this->unitpj_model->getAll();
+        $data['session'] = $this->session->userdata('user_logged');
+
         $this->load->view("admin/unitpj/unitpj", $data);
     }
 
@@ -25,6 +29,8 @@ class Unitpj extends CI_Controller
         $kodeTerbaru = $kodeId + 1;
         $data['id_pj'] = $kodeTerbaru;
         $validation = $this->form_validation;
+        $data['session'] = $this->session->userdata('user_logged');
+
         $validation->set_rules($unitpj->rules());
 
         if ($validation->run()) {
@@ -42,6 +48,8 @@ class Unitpj extends CI_Controller
         $unitpj = $this->unitpj_model;
         $validation = $this->form_validation;
         $validation->set_rules($unitpj->rules());
+        $data['session'] = $this->session->userdata('user_logged');
+
 
         if ($validation->run()) {
             $unitpj->update();

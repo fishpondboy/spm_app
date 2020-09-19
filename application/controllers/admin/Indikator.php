@@ -11,11 +11,15 @@ class Indikator extends CI_Controller
         $this->load->model("layanan_model");
         $this->load->model("subpj_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
     {
         $data["indikator"] = $this->indikator_model->getAll();
+
+        $data['session'] = $this->session->userdata('user_logged');
         $this->load->view("admin/indikator/indikator", $data);
     }
 
@@ -28,6 +32,8 @@ class Indikator extends CI_Controller
         $data['id_indikator'] = $kodeTerbaru;
         $data["layanan"] = $this->layanan_model->getAll();
         $data["subpj"] = $this->subpj_model->getAll();
+
+        $data['session'] = $this->session->userdata('user_logged');
         $validation = $this->form_validation;
         $validation->set_rules($indikator->rules());
 
@@ -48,6 +54,8 @@ class Indikator extends CI_Controller
         $data["subpj"] = $this->subpj_model->getAll();
         $validation = $this->form_validation;
         $validation->set_rules($indikator->rules());
+
+        $data['session'] = $this->session->userdata('user_logged');
 
         if ($validation->run()) {
             $indikator->update();

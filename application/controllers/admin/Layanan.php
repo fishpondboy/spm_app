@@ -10,11 +10,15 @@ class Layanan extends CI_Controller
         $this->load->model("layanan_model");
         $this->load->model("subkomponen_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
     {
         $data["layanan"] = $this->layanan_model->getAll();
+        $data['session'] = $this->session->userdata('user_logged');
+
         $this->load->view("admin/layanan/layanan", $data);
     }
 
@@ -26,6 +30,8 @@ class Layanan extends CI_Controller
         $kodeTerbaru = $kodeId + 1;
         $data['id_layanan'] = $kodeTerbaru;
         $data["subkomponen"] = $this->subkomponen_model->getAll();
+        $data['session'] = $this->session->userdata('user_logged');
+
         $validation = $this->form_validation;
         $validation->set_rules($layanan->rules());
 
@@ -43,6 +49,8 @@ class Layanan extends CI_Controller
 
         $layanan = $this->layanan_model;
         $data["subkomponen"] = $this->subkomponen_model->getAll();
+        $data['session'] = $this->session->userdata('user_logged');
+
         $validation = $this->form_validation;
         $validation->set_rules($layanan->rules());
 

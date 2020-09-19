@@ -9,6 +9,8 @@ class Overview extends CI_Controller
         parent::__construct();
         $this->load->model("overview_model");
         $this->load->library('form_validation');
+        $this->load->model('login_model');
+        if ($this->login_model->isNotLogin()) redirect(site_url('login'));
     }
 
     public function index()
@@ -18,6 +20,7 @@ class Overview extends CI_Controller
         $data["indikator2018"] = $this->overview_model->getAll(2018);
         $data["indikator2019"] = $this->overview_model->getAll(2019);
         $data["indikator2020"] = $this->overview_model->getAll(2020);
+        $data['session'] = $this->session->userdata('user_logged');
         $data["tahun"] = $this->overview_model->getTahun();
         $this->load->view("admin/overview", $data);
     }
