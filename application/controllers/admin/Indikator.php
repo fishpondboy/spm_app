@@ -7,24 +7,29 @@ class Indikator extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("user_overview_model");
         $this->load->model("indikator_model");
         $this->load->model("layanan_model");
         $this->load->model("subpj_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
+        if ($this->session->userdata('user_logged')->role != 'ADMIN') redirect(site_url('kuisioner'));
     }
 
     public function index()
     {
         $data["indikator"] = $this->indikator_model->getAll();
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $data['session'] = $this->session->userdata('user_logged');
         $this->load->view("admin/indikator/indikator", $data);
     }
 
     public function tambah()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $indikator = $this->indikator_model;
         $idTerakhir = $indikator->checkId();
         $kodeId = substr($idTerakhir, 3, 3);
@@ -48,7 +53,8 @@ class Indikator extends CI_Controller
     public function ubah($id = null)
     {
         if (!isset($id)) redirect('admin/indikator');
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $indikator = $this->indikator_model;
         $data["layanan"] = $this->layanan_model->getAll();
         $data["subpj"] = $this->subpj_model->getAll();

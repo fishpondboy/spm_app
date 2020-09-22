@@ -7,16 +7,20 @@ class Target extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("user_overview_model");
         $this->load->model("target_model");
         $this->load->model("indikator_model");
         $this->load->model("overview_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
+        if ($this->session->userdata('user_logged')->role != 'ADMIN') redirect(site_url('kuisioner'));
     }
 
     public function index()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $data["tahun"] = $this->overview_model->getTahun();
         $data["target"] = $this->target_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
@@ -26,6 +30,8 @@ class Target extends CI_Controller
 
     public function tambah()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $target = $this->target_model;
         $data["indikator"] = $this->indikator_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
@@ -43,6 +49,8 @@ class Target extends CI_Controller
 
     public function ubah($id = null)
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         if (!isset($id)) redirect('admin/target');
 
         $target = $this->target_model;

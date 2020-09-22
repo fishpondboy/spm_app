@@ -7,14 +7,18 @@ class Komponen extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("user_overview_model");
         $this->load->model("komponen_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
+        if ($this->session->userdata('user_logged')->role != 'ADMIN') redirect(site_url('kuisioner'));
     }
 
     public function index()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $data["komponen"] = $this->komponen_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
 
@@ -23,6 +27,8 @@ class Komponen extends CI_Controller
 
     public function tambah()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $komponen = $this->komponen_model;
         $idTerakhir = $komponen->checkId();
         $kodeId = substr($idTerakhir, 3, 3);
@@ -44,7 +50,8 @@ class Komponen extends CI_Controller
     public function ubah($id = null)
     {
         if (!isset($id)) redirect('admin/komponen');
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $komponen = $this->komponen_model;
         $validation = $this->form_validation;
         $validation->set_rules($komponen->rules());

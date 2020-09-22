@@ -56,6 +56,9 @@
                                         <div class="tab-pane fade show active" id="nav-<?= $t->tahun ?>" role="tabpanel" aria-labelledby="nav-<?= $t->tahun ?>-tab"><?php } else { ?>
                                             <div class="tab-pane fade show" id="nav-<?= $t->tahun ?>" role="tabpanel" aria-labelledby="nav-<?= $t->tahun ?>-tab"><?php } ?>
                                             <div class="card shadow my-4">
+                                                <div class="card-header">
+                                                    <a href="<?php echo site_url('user/overview/tambah') ?>"><i class="fas fa-plus"></i> Isi Data</a>
+                                                </div>
                                                 <div class="card-body">
                                                     <div class="table-responsive">
                                                         <table class="table table-hover dataTable" id="dataTable" width="100%" cellspacing="0">
@@ -68,6 +71,8 @@
                                                                     <th>Satuan</th>
                                                                     <th>Target</th>
                                                                     <th>Angka Real</th>
+                                                                    <th>Capain</th>
+                                                                    <th>Aksi</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -95,6 +100,17 @@
                                                                         <td>
                                                                             <?php echo $i->angka_real ?>
                                                                         </td>
+                                                                        <td>
+                                                                            <?php echo $i->capaian ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php if (!empty($i->angka_real)) { ?>
+                                                                                <a href="<?= site_url('user/overview/ubah/' . $i->id_data) ?>" class="btn btn-small"><i class="fas fa-edit"></i> Edit</a>
+                                                                                <a onclick="deleteConfirm('<?= site_url('user/overview/hapus/' . $i->id_data) ?>')" href="#!" class="btn btn-small text-danger"><i class="fas fa-trash"></i> Hapus</a>
+                                                                            <?php } else { ?>
+                                                                                <a href="<?= site_url('user/overview/tambah/' . $i->tahun . '/' . $i->id_indikator) ?>" class="btn btn-small"><i class="fas fa-edit"></i> Isi Data</a>
+                                                                            <?php } ?>
+                                                                        </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>
@@ -106,6 +122,8 @@
                                                                     <th>Satuan</th>
                                                                     <th>Target</th>
                                                                     <th>Angka Real</th>
+                                                                    <th>Capaian</th>
+                                                                    <th>Aksi</th>
                                                                 </tr>
                                                             </tfooter>
                                                         </table>
@@ -136,7 +154,12 @@
 
                 <?php $this->load->view("_partials/modal.php") ?>
                 <?php $this->load->view("_partials/js.php") ?>
-
+                <script>
+                    function deleteConfirm(url) {
+                        $('#btn-delete').attr('href', url);
+                        $('#deleteModal').modal();
+                    }
+                </script>
 </body>
 
 </html>

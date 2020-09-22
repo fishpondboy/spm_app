@@ -16,6 +16,7 @@ class Overview extends CI_Controller
     public function index()
     {
         $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $data["indikator2016"] = $this->user_overview_model->getAll(2016, $unit);
         $data["indikator2017"] = $this->user_overview_model->getAll(2017, $unit);
         $data["indikator2018"] = $this->user_overview_model->getAll(2018, $unit);
@@ -23,7 +24,54 @@ class Overview extends CI_Controller
         $data["indikator2020"] = $this->user_overview_model->getAll(2020, $unit);
         $data['session'] = $this->session->userdata('user_logged');
         $data["tahun"] = $this->user_overview_model->getTahun();
-        $data['unit'] = $unit;
         $this->load->view("user/overview", $data);
+    }
+
+    public function tambah($tahun, $id_indikator)
+    {
+        $model = $this->user_overview_model;
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
+        $data['session'] = $this->session->userdata('user_logged');
+        $data['indikator'] = $model->getIndikator($id_indikator);
+        $data['target'] = $model->getTarget($id_indikator, $tahun);
+        $validation = $this->form_validation;
+        $validation->set_rules($model->rules());
+
+        if ($validation->run()) {
+            $model->save();
+            $this->session->set_flashdata('success', 'Berhasil disimpan');
+        } else {
+        }
+
+        $this->load->view("user/tambah", $data);
+    }
+
+    public function ubah($id_data)
+    {
+        $model = $this->user_overview_model;
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
+        $data['session'] = $this->session->userdata('user_logged');
+        $data['data'] = $model->getData($id_data);
+        $validation = $this->form_validation;
+        $validation->set_rules($model->rules());
+
+        if ($validation->run()) {
+            $model->update();
+            $this->session->set_flashdata('success', 'Berhasil disimpan');
+        } else {
+        }
+
+        $this->load->view("user/ubah", $data);
+    }
+
+    public function hapus($id = null)
+    {
+        if (!isset($id)) show_404();
+
+        if ($this->user_overview_model->delete($id)) {
+            redirect(site_url('user/overview'));
+        }
     }
 }

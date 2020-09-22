@@ -7,15 +7,19 @@ class Subpj extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("user_overview_model");
         $this->load->model("subpj_model");
         $this->load->model("unitpj_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
+        if ($this->session->userdata('user_logged')->role != 'ADMIN') redirect(site_url('kuisioner'));
     }
 
     public function index()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $data["subpj"] = $this->subpj_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
 
@@ -24,6 +28,8 @@ class Subpj extends CI_Controller
 
     public function tambah()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $subpj = $this->subpj_model;
         $idTerakhir = $subpj->checkId();
         $kodeId = substr($idTerakhir, 3, 3);
@@ -46,7 +52,8 @@ class Subpj extends CI_Controller
     public function ubah($id = null)
     {
         if (!isset($id)) redirect('admin/subpj');
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $subpj = $this->subpj_model;
         $data["unitpj"] = $this->unitpj_model->getAll();
         $validation = $this->form_validation;

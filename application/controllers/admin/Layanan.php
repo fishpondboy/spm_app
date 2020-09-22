@@ -7,23 +7,28 @@ class Layanan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("user_overview_model");
         $this->load->model("layanan_model");
         $this->load->model("subkomponen_model");
         $this->load->library('form_validation');
         $this->load->model('login_model');
         if ($this->login_model->isNotLogin()) redirect(site_url('login'));
+        if ($this->session->userdata('user_logged')->role != 'ADMIN') redirect(site_url('kuisioner'));
     }
 
     public function index()
     {
         $data["layanan"] = $this->layanan_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $this->load->view("admin/layanan/layanan", $data);
     }
 
     public function tambah()
     {
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $layanan = $this->layanan_model;
         $idTerakhir = $layanan->checkId();
         $kodeId = substr($idTerakhir, 3, 3);
@@ -46,7 +51,8 @@ class Layanan extends CI_Controller
     public function ubah($id = null)
     {
         if (!isset($id)) redirect('admin/layanan');
-
+        $unit = $this->user_overview_model->getUnit();
+        $data['unit'] = $unit;
         $layanan = $this->layanan_model;
         $data["subkomponen"] = $this->subkomponen_model->getAll();
         $data['session'] = $this->session->userdata('user_logged');
